@@ -1,0 +1,27 @@
+<div class="container">
+
+  <h1 class="text-center">BIENVENIDO</h1>
+
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <p class="text-center">Por favor cargue su archivo de preguntas.</p>
+    </div>
+
+    <div class="custom-file col-6">
+      <input type="file" class="custom-file-input" id="customFile" (change)="cargarPreguntas($event)"
+        accept=".xlsx, .xls">
+      <label class="custom-file-label" for="customFile"> {{textArchivo}} </label>
+    </div>
+
+    <div class="col-12" *ngIf="!existFile">
+      <p class="text-center">¿No tienes la plantilla?
+        <a href="../../../assets/files/Plantilla_Preguntas.xlsx" download>Descárgala aquí</a>
+      </p>
+    </div>
+
+    <div class="col-12" *ngIf="existFile">
+      <button class="btn btn-primary col-6 offset-3" (click)="listarPreguntasJson()">Inciar Juego</button>
+    </div>
+
+  </div>
+</div>
