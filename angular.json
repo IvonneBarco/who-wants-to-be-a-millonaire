@@ -127,8 +127,13 @@
               "devServerTarget": "who-wants-to-be-a-millonaire:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "who-wants-to-be-a-millonaire"
 }
