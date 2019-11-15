@@ -13,17 +13,35 @@
       <label class="custom-file-label" for="customFile"> {{textArchivo}} </label>
     </div>
 
+    <br>
+
     <div class="col-12" *ngIf="!existFile">
       <p class="text-center">¿No tienes la plantilla?
         <a href="../../../assets/files/Plantilla_Preguntas.xlsx" download>Descárgala aquí</a>
       </p>
     </div>
-
+    
     <div class="col-12" *ngIf="existFile">
       <button class="btn btn-primary col-6 offset-3" data-toggle="modal" data-target="#ModalIniciarJuego">Inciar
         Juego</button>
     </div>
 
+  </div>
+</div>
+
+<br>
+<div class="row col-md-12" *ngIf="questions.length > 0">
+  <div class="col-md-3">
+    <button class="btn btn-secondary" (click)="callFriend()" [disabled]="blockCall"> Llamada a un amigo </button>
+  </div>
+  <div class="col-md-3">
+    <button class="btn btn-secondary" (click)="option50To50()" [disabled]="block50" > 50 / 50 </button>
+  </div>
+  <div class="col-md-3">
+    <button class="btn btn-secondary" (click)="publicSupport()" [disabled]="blockPublic"> Ayuda del público</button>
+  </div>
+  <div class="col-md-3">
+    Puntos: {{ points }}
   </div>
 </div>
 
@@ -36,29 +54,29 @@
 
     <div class="row col-md-12">
       <div class="col-md-5 btn-questions" (click)="validateAnswer('A')">
-        <p class="text-center"> {{ item?.A }} </p>
+        <p class="text-center" id="OpcA"> {{ item?.A }} </p>
       </div>
       <div class="col-md-5 btn-questions" (click)="validateAnswer('B')">
-        <p class="text-center"> {{ item?.B }} </p>
+        <p class="text-center" id="OpcB"> {{ item?.B }} </p>
       </div>
     </div>
 
     <div class="row col-md-12">
       <div class="col-md-5 btn-questions" (click)="validateAnswer('C')">
-        <p class="text-center"> {{ item?.C }} </p>
+        <p class="text-center" id="OpcC"> {{ item?.C }} </p>
       </div>
       <div class="col-md-5 btn-questions" (click)="validateAnswer('D')">
-        <p class="text-center"> {{ item?.D }} </p>
+        <p class="text-center" id="OpcD"> {{ item?.D }} </p>
       </div>
     </div>
 
-    <button class="btn btn-primary" (click)="next()" >Siguiente</button>
+    <button class="btn btn-primary" (click)="next()" [disabled]="selected">Siguiente</button>
   </div>
 </div>
 
 
 
-<!-- Modal -->
+<!-- Modal Iniciar Juego -->
 <div class="modal fade" id="ModalIniciarJuego" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -79,3 +97,26 @@
     </div>
   </div>
 </div>
+<!-- Fin Modal Iniciar Juego -->
+
+<!-- Modal Ayudas -->
+<div class="modal fade" id="ModalAyudas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> {{ titleModal }} </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img [src]="imgModal" alt="image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">TERMINAR</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin Modal Ayudas -->
