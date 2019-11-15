@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+declare var $: any;
 
 @Component({
   selector: 'app-home-page',
@@ -12,12 +13,15 @@ export class HomePageComponent implements OnInit {
 
   public loading: boolean;
   public storeData: any;
-  public jsonData: any = [];
+  public questionData: any = [];
   public fileUploaded: File;
   public worksheet: any;
   public textArchivo: any;
 
   public existFile: boolean;
+  public numeroPreguntas: number;
+  public questions: any[] = [];
+  public count = 0;
 
   constructor() { }
 
@@ -44,20 +48,19 @@ export class HomePageComponent implements OnInit {
   }
 
   listarPreguntasJson() {
-    const userId = localStorage.getItem('key');
+    this.questions = [];
+    this.questionData = XLSX.utils.sheet_to_json(this.worksheet, { raw: false });
+    this.numeroPreguntas = this.questionData.length;
 
-    if (this.fileUploaded === undefined) {
-      this.alertInfo(
-        'warning',
-        'Por favor, cargue un archivo xls o xlsx con las preguntas',
-        'top',
-        '3000'
-      );
-    } else {
-      this.jsonData = XLSX.utils.sheet_to_json(this.worksheet, { raw: false });
+    this.questions.push(this.questionData[this.count]);
+    $('#ModalIniciarJuego').modal('hide');
+  }
 
-      console.log(this.jsonData);
-    }
+  siguiente() {
+    this.questions = [];
+    this.count++;
+    this.questions.push(this.questionData[this.count]);
+
   }
 
   readExcel() {
