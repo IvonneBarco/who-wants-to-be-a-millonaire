@@ -19,7 +19,7 @@ export class HomePageComponent implements OnInit {
   public textArchivo: any;
 
   public existFile: boolean;
-  public numeroPreguntas: number;
+  public numberQuestions: number;
   public questions: any[] = [];
   public count = 0;
 
@@ -30,7 +30,7 @@ export class HomePageComponent implements OnInit {
     this.existFile = false;
   }
 
-  cargarPreguntas(event) {
+  uploadQuestions(event) {
     this.fileUploaded = event.target.files[0];
 
     this.readExcel();
@@ -47,20 +47,13 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  listarPreguntasJson() {
+  questionsJson() {
     this.questions = [];
     this.questionData = XLSX.utils.sheet_to_json(this.worksheet, { raw: false });
-    this.numeroPreguntas = this.questionData.length;
+    this.numberQuestions = this.questionData.length;
 
     this.questions.push(this.questionData[this.count]);
     $('#ModalIniciarJuego').modal('hide');
-  }
-
-  siguiente() {
-    this.questions = [];
-    this.count++;
-    this.questions.push(this.questionData[this.count]);
-
   }
 
   readExcel() {
@@ -82,6 +75,22 @@ export class HomePageComponent implements OnInit {
       this.loading = false;
     };
     readFile.readAsArrayBuffer(this.fileUploaded);
+  }
+
+  next() {
+    this.questions = [];
+    this.count++;
+    this.questions.push(this.questionData[this.count]);
+
+  }
+
+  validateAnswer(opc: any) {
+    const answerOk = this.questions[0].OK;
+    if (answerOk === opc) {
+      alert('CORRECTO!');
+    } else {
+      alert('INCORRECTO');
+    }
   }
 
   alertInfo(textType: any, textTitle: any, position: any, timer: any) {

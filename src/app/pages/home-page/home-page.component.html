@@ -8,7 +8,7 @@
     </div>
 
     <div class="custom-file col-6">
-      <input type="file" class="custom-file-input" id="customFile" (change)="cargarPreguntas($event)"
+      <input type="file" class="custom-file-input" id="customFile" (change)="uploadQuestions($event)"
         accept=".xlsx, .xls">
       <label class="custom-file-label" for="customFile"> {{textArchivo}} </label>
     </div>
@@ -35,24 +35,24 @@
     </div>
 
     <div class="row col-md-12">
-      <div class="col-md-5 btn-questions">
+      <div class="col-md-5 btn-questions" (click)="validateAnswer('A')">
         <p class="text-center"> {{ item?.A }} </p>
       </div>
-      <div class="col-md-5 btn-questions">
+      <div class="col-md-5 btn-questions" (click)="validateAnswer('B')">
         <p class="text-center"> {{ item?.B }} </p>
       </div>
     </div>
 
     <div class="row col-md-12">
-      <div class="col-md-5 btn-questions">
+      <div class="col-md-5 btn-questions" (click)="validateAnswer('C')">
         <p class="text-center"> {{ item?.C }} </p>
       </div>
-      <div class="col-md-5 btn-questions">
+      <div class="col-md-5 btn-questions" (click)="validateAnswer('D')">
         <p class="text-center"> {{ item?.D }} </p>
       </div>
     </div>
 
-    <button class="btn btn-primary" (click)="siguiente()" >Siguiente</button>
+    <button class="btn btn-primary" (click)="next()" >Siguiente</button>
   </div>
 </div>
 
@@ -74,7 +74,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
-        <button type="button" class="btn btn-primary" (click)="listarPreguntasJson()">SI</button>
+        <button type="button" class="btn btn-primary" (click)="questionsJson()">SI</button>
       </div>
     </div>
   </div>
