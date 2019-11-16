@@ -25,18 +25,30 @@ export class HomePageComponent implements OnInit {
   public points = 0;
 
   public selected = true;
+  public selectedValidate = true;
   public titleModal: any;
   public imgModal: any;
   public block50 = false;
   public blockPublic = false;
   public blockCall = false;
+  public blockButtons = false;
+  public press = false;
+  public answer: any;
+  public validateClass: any;
+
+  public min: number;
+  public seg: number;
+  public temporizer: any;
+
+  public titleSure: any;
+  public textSure: any;
+  public imgSure: any;
 
   constructor() { }
 
   ngOnInit() {
     this.textArchivo = 'No se ha seleccionado ningún archivo';
     this.existFile = false;
-    // $('#OpcA').hide(3000);
   }
 
   uploadQuestions(event) {
@@ -46,6 +58,7 @@ export class HomePageComponent implements OnInit {
 
     if (event.isTrusted) {
       this.textArchivo = this.fileUploaded.name;
+      $('#ModalCargarArchivo').modal('hide');
       this.existFile = true;
       this.alertInfo(
         'success',
@@ -64,6 +77,7 @@ export class HomePageComponent implements OnInit {
 
     this.questions.push(this.questionData[this.count]);
     $('#ModalIniciarJuego').modal('hide');
+    $('#btn-play').hide();
   }
 
   readExcel() {
@@ -88,18 +102,86 @@ export class HomePageComponent implements OnInit {
   }
 
   next() {
+
+    this.press = false;
+    this.classClear();
+
+    if (this.count === 4) {
+      $('#ModalSeguro').modal('show');
+      this.titleSure = '1° Seguro';
+      this.textSure = 'Felicitaciones, ha alcanzado el primer seguro!!';
+      this.imgSure = '../../../assets/images/positive-vote.png';
+    } else if (this.count === 7) {
+      $('#ModalSeguro').modal('show');
+      this.titleSure = '2° Seguro';
+      this.textSure = 'Felicitaciones, ha alcanzado el segundo seguro!!';
+      this.imgSure = '../../../assets/images/positive-vote.png';
+    } else if (this.count === 13) {
+      $('#ModalSeguro').modal('show');
+      this.titleSure = '3° Seguro';
+      this.textSure = 'Felicitaciones, ha alcanzado el tercer seguro!!';
+      this.imgSure = '../../../assets/images/positive-vote.png';
+    } else if (this.count > 15) {
+      $('#ModalSeguro').modal('show');
+      this.titleSure = '¡¡GANASTE!!';
+      this.textSure = 'Felicitaciones, ahora eres todo un catequista!! \nPuntaje: ' + this.points;
+      this.imgSure = '../../../assets/images/positive-vote.png';
+    }
+
     this.questions = [];
     this.selected = true;
+    this.selectedValidate = true;
     this.count++;
     this.questions.push(this.questionData[this.count]);
 
   }
 
   validateAnswer(opc: any) {
-    this.selected = false;
+    this.press = true;
+    this.selectedValidate = false;
+    this.answer = opc;
+
+    switch (opc) {
+      case 'A':
+        document.getElementById('BtnOpcA').classList.add('answer-press');
+        break;
+      case 'B':
+        document.getElementById('BtnOpcB').classList.add('answer-press');
+        break;
+      case 'C':
+        document.getElementById('BtnOpcC').classList.add('answer-press');
+        break;
+      case 'D':
+        document.getElementById('BtnOpcD').classList.add('answer-press');
+        break;
+      default:
+        break;
+    }
+  }
+
+  answerConfirm() {
     const answerOk = this.questions[0].OK;
-    if (answerOk === opc) {
-      alert('CORRECTO!');
+    this.selected = false;
+    this.selectedValidate = true;
+    if (answerOk === this.answer) {
+
+      switch (answerOk) {
+        case 'A':
+          document.getElementById('BtnOpcA').classList.add('answer-ok');
+          break;
+        case 'B':
+          document.getElementById('BtnOpcB').classList.add('answer-ok');
+          break;
+        case 'C':
+          document.getElementById('BtnOpcC').classList.add('answer-ok');
+          break;
+        case 'D':
+          document.getElementById('BtnOpcD').classList.add('answer-ok');
+          break;
+        default:
+          break;
+      }
+
       if (this.count >= 0 && this.count <= 5) {
         this.points++;
       } else if (this.count >= 6 && this.count <= 8) {
@@ -111,7 +193,41 @@ export class HomePageComponent implements OnInit {
       }
 
     } else {
-      alert('INCORRECTO');
+
+      switch (answerOk) {
+        case 'A':
+          document.getElementById('BtnOpcA').classList.add('answer-ok');
+          break;
+        case 'B':
+          document.getElementById('BtnOpcB').classList.add('answer-ok');
+          break;
+        case 'C':
+          document.getElementById('BtnOpcC').classList.add('answer-ok');
+          break;
+        case 'D':
+          document.getElementById('BtnOpcD').classList.add('answer-ok');
+          break;
+        default:
+          break;
+      }
+
+      switch (this.answer) {
+        case 'A':
+          document.getElementById('BtnOpcA').classList.add('answer-bad');
+          break;
+        case 'B':
+          document.getElementById('BtnOpcB').classList.add('answer-bad');
+          break;
+        case 'C':
+          document.getElementById('BtnOpcC').classList.add('answer-bad');
+          break;
+        case 'D':
+          document.getElementById('BtnOpcD').classList.add('answer-bad');
+          break;
+        default:
+          break;
+      }
+      $('#ModalValidacion').modal('show');
     }
   }
 
@@ -237,16 +353,29 @@ export class HomePageComponent implements OnInit {
     this.blockPublic = true;
     $('#ModalAyudas').modal('show');
     this.titleModal = 'AYUDA DEL PÚBLCO';
-    // this.imgModal = '../../../assets/images/image.png';
-    this.imgModal = 'https://image.flaticon.com/icons/svg/126/126341.svg';
+    this.imgModal = '../../../assets/images/feedback-lg.png';
   }
 
   callFriend() {
     this.blockCall = true;
     $('#ModalAyudas').modal('show');
     this.titleModal = 'LLAMADA A UN AMIGO';
-    // this.imgModal = '../../../assets/images/image.png';
-    this.imgModal = 'https://image.flaticon.com/icons/svg/126/126341.svg';
+    this.imgModal = '../../../assets/images/telephone-lg.png';
+  }
+
+  gameOver() {
+    $('#ModalValidacion').modal('hide');
+    this.existFile = false;
+  }
+
+  reset() {
+    $('#ModalReiniciarJuego').modal('hide');
+    this.questions = [];
+    this.existFile = true;
+    this.press = false;
+    this.count = 0;
+    this.points = 0;
+    this.questions.push(this.questionData[this.count]);
   }
 
   alertInfo(textType: any, textTitle: any, position: any, timer: any) {
@@ -261,6 +390,13 @@ export class HomePageComponent implements OnInit {
       type: textType,
       title: textTitle
     });
+  }
+
+  classClear() {
+    document.getElementById('BtnOpcA').classList.remove('answer-ok', 'answer-press', 'answer-bad');
+    document.getElementById('BtnOpcB').classList.remove('answer-ok', 'answer-press', 'answer-bad');
+    document.getElementById('BtnOpcC').classList.remove('answer-ok', 'answer-press', 'answer-bad');
+    document.getElementById('BtnOpcD').classList.remove('answer-ok', 'answer-press', 'answer-bad');
   }
 
 }
