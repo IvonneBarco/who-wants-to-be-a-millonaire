@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import { SweetalertService } from 'src/app/services/sweetalert/sweetalert.service';
 declare var $: any;
+
 
 @Component({
   selector: 'app-home-page',
@@ -44,7 +45,7 @@ export class HomePageComponent implements OnInit {
   public textSure: any;
   public imgSure: any;
 
-  constructor() { }
+  constructor(private _sweetalert: SweetalertService) { }
 
   ngOnInit() {
     this.textArchivo = 'No se ha seleccionado ningún archivo';
@@ -60,12 +61,7 @@ export class HomePageComponent implements OnInit {
       this.textArchivo = this.fileUploaded.name;
       $('#ModalCargarArchivo').modal('hide');
       this.existFile = true;
-      this.alertInfo(
-        'success',
-        '¡Tu archivo se ha cargado correctamente!',
-        'top',
-        '3000'
-      );
+      this._sweetalert.alertGeneral('¡Tu archivo se ha cargado correctamente!', '', 'ok', 'success');
     }
   }
 
@@ -378,19 +374,6 @@ export class HomePageComponent implements OnInit {
     this.questions.push(this.questionData[this.count]);
   }
 
-  alertInfo(textType: any, textTitle: any, position: any, timer: any) {
-    const Toast = Swal.mixin({
-      toast: true,
-      position,
-      showConfirmButton: false,
-      timer
-    });
-
-    Toast.fire({
-      type: textType,
-      title: textTitle
-    });
-  }
 
   classClear() {
     document.getElementById('BtnOpcA').classList.remove('answer-ok', 'answer-press', 'answer-bad');
