@@ -1,0 +1,78 @@
+.title{
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+#btn-play {
+  border-radius: 20px;
+}
+.content-help {
+  margin-top: 5%;
+}
+.btn-call-friend {
+  background-color: #f8f9fa00;
+  border-color: #f8f9fa00;
+}
+
+.btn-option-50 {
+  background-color: #f8f9fa00;
+  border-color: #f8f9fa00;
+}
+
+.btn-public-support {
+  background-color: #f8f9fa00;
+  border-color: #f8f9fa00;
+}
+
+.points-board {
+  background-image: url('../../../assets/images/score.png');
+  height: 100%;
+  background-repeat: no-repeat;
+}
+
+.points-number{
+  position: absolute;
+  top: 50%;
+  left: 16%;
+  letter-spacing: 10px;
+  font-weight: bold;
+}
+
+.content-question {
+  border: 4px solid #0963d3;
+  border-radius: 20px;
+  padding: 2% 0% 2% 0%;
+  margin: 25px 0px 25px 0px;
+}
+
+.content-question>p{
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.btn-questions {
+  height: 80px;
+  font-weight: bold;
+  margin: 5px 0px 5px 0px;
+  border-radius: 20px;
+}
+
+.btn-questions:disabled {
+  opacity: 1;
+}
+
+.btn-next {
+  margin-top: 20px;
+}
+
+.answer-press {
+  background-color: #ffc107;
+}
+
+.answer-ok {
+  background-color: #28a745;
+}
+
+.answer-bad {
+  background-color: #dc3545;
+}
