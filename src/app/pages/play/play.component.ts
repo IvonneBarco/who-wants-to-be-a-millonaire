@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { SweetalertService } from 'src/app/services/sweetalert/sweetalert.service';
+import { Router } from '@angular/router';
 declare var $: any;
 
 
@@ -45,11 +46,14 @@ export class PlayComponent implements OnInit {
   public titleSure: any;
   public textSure: any;
   public imgSure: any;
+  public countSure = 0;
+  public play = false;
+  
 
-  constructor(private _sweetalert: SweetalertService) { }
+  constructor(private _sweetalert: SweetalertService, private _route: Router) { }
 
   ngOnInit() {
-    this.textArchivo = 'No se ha seleccionado ningún archivo';
+    this.textArchivo = '¿Quién quiere ser Arquitecto de Software?';
     this.existFile = false;
   }
 
@@ -59,7 +63,7 @@ export class PlayComponent implements OnInit {
     this.readExcel();
 
     if (event.isTrusted) {
-      this.textArchivo = this.fileUploaded.name;
+      this.textArchivo = '¡El juego está listo!';
       $('#ModalCargarArchivo').modal('hide');
       this.existFile = true;
       this._sweetalert.alertGeneral('¡Tu archivo se ha cargado correctamente!', '', 'ok', 'success');
@@ -67,6 +71,7 @@ export class PlayComponent implements OnInit {
   }
 
   questionsJson() {
+    this.play = true;
     this.questions = [];
     this.count = 0;
     this.questionData = XLSX.utils.sheet_to_json(this.worksheet, { raw: false });
@@ -75,6 +80,7 @@ export class PlayComponent implements OnInit {
     this.questions.push(this.questionData[this.count]);
     $('#ModalIniciarJuego').modal('hide');
     $('#btn-play').hide();
+    $('#container-play').hide();
   }
 
   readExcel() {
@@ -102,27 +108,34 @@ export class PlayComponent implements OnInit {
 
     this.press = false;
     this.classClear();
+    console.log(this.count)
 
     if (this.count === 4) {
       $('#ModalSeguro').modal('show');
       this.titleSure = '1° Seguro';
       this.textSure = 'Felicitaciones, ha alcanzado el primer seguro!!';
       this.imgSure = '../../../assets/images/positive-vote.png';
+      this.countSure = 1;
     } else if (this.count === 7) {
       $('#ModalSeguro').modal('show');
       this.titleSure = '2° Seguro';
       this.textSure = 'Felicitaciones, ha alcanzado el segundo seguro!!';
       this.imgSure = '../../../assets/images/positive-vote.png';
+      this.countSure = 2;
     } else if (this.count === 13) {
       $('#ModalSeguro').modal('show');
       this.titleSure = '3° Seguro';
       this.textSure = 'Felicitaciones, ha alcanzado el tercer seguro!!';
       this.imgSure = '../../../assets/images/positive-vote.png';
-    } else if (this.count > 15) {
-      $('#ModalSeguro').modal('show');
+      this.countSure = 3;
+    } else if (this.count === 14) {
+      this.existFile = true
+      this.play = false;
+      $('#ModalGanador').modal('show');
       this.titleSure = '¡¡GANASTE!!';
-      this.textSure = 'Felicitaciones, ahora eres todo un catequista!! \nPuntaje: ' + this.points;
+      this.textSure = '¡¡Felicitaciones sigue adquiriendo nuevos conocimientos!! \nPuntaje: ' + this.points;
       this.imgSure = '../../../assets/images/positive-vote.png';
+      this.countSure = 4;
     }
 
     this.questions = [];
@@ -363,6 +376,7 @@ export class PlayComponent implements OnInit {
   gameOver() {
     $('#ModalValidacion').modal('hide');
     this.existFile = false;
+    this._route.navigate(['/home']);
   }
 
   reset() {
@@ -373,6 +387,21 @@ export class PlayComponent implements OnInit {
     this.count = 0;
     this.points = 0;
     this.questions.push(this.questionData[this.count]);
+  }
+
+  repetir(){
+    $('#ModalValidacion').modal('hide');
+    this.questions = [];
+    this.existFile = true;
+    this.press = false;
+    this.count = 0;
+    this.points = 0;
+    this.questions.push(this.questionData[this.count]);
+    this.classClear();
+  }
+
+  salir(){
+    this._route.navigate(['/home']);
   }
 
 
