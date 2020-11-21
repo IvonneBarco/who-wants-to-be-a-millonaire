@@ -401,6 +401,8 @@ export class PlayComponent implements OnInit {
   }
 
   salir(){
+    $('#ModalGanador').modal('hide');
+    this.existFile = false;
     this._route.navigate(['/home']);
   }
 
